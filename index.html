@@ -390,13 +390,14 @@
       position: sticky;
       right: 0;
       z-index: 4;
-      min-width: 240px;
-      max-width: 240px;
+      min-width: 300px;
+      max-width: 300px;
+      vertical-align: top;
     }
 
     .habit-name-wrap {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
     }
@@ -404,15 +405,20 @@
     .habit-name {
       font-weight: 700;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
       min-width: 0;
+      flex: 1;
     }
 
     .habit-name span:last-child {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow: visible;
+      text-overflow: unset;
+      white-space: normal;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      flex: 1;
     }
 
     .habit-actions {
@@ -609,8 +615,8 @@
 
       thead .habit-head,
       tbody .habit-cell {
-        min-width: 190px;
-        max-width: 190px;
+        min-width: 260px;
+        max-width: 260px;
       }
     }
   </style>
@@ -712,7 +718,7 @@
       </div>
     </section>
 
-    <p class="footer-note">edited by mohamed ali</p>
+    <p class="footer-note">مصمم بواجهة عربية RTL باستخدام HTML5 + CSS3 + Vanilla JavaScript.</p>
   </div>
 
   <script>
