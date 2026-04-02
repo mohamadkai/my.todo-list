@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متعقّب العادات اليومي</title>
+  <style>
+    :root {
+      --bg: #071527;
+      --surface: rgba(10, 24, 44, 0.82);
+      --surface-2: #0d1e36;
+      --surface-3: #10223d;
+      --text: #eef6ff;
+      --muted: #9bb5d6;
+      --line: rgba(98, 139, 191, 0.26);
+      --primary: #1ea7ff;
+      --primary-2: #6fd3ff;
+      --accent: #8b5cf6;
+      --success: #22c55e;
+      --danger: #ff6b6b;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(30, 167, 255, 0.18), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.16), transparent 26%),
+        linear-gradient(180deg, #06111f 0%, #09182c 52%, #0b1d35 100%);
+      color: var(--text);
+    }
+
+    .app-shell {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero,
+    .card,
+    .tracker-wrap {
+      background: var(--surface);
+      border: 1px solid rgba(111, 211, 255, 0.12);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at top center, rgba(111, 211, 255, 0.22), transparent 22%),
+        linear-gradient(135deg, #0a1830, #0d2548 55%, #132d5a);
+      color: #fff;
+      padding: 28px;
+      border-radius: 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(111, 211, 255, 0.08);
+      filter: blur(2px);
+    }
+
+    .hero::before {
+      width: 220px;
+      height: 220px;
+      top: -80px;
+      left: -60px;
+    }
+
+    .hero::after {
+      width: 260px;
+      height: 260px;
+      bottom: -120px;
+      right: -70px;
+    }
+
+    .hero-top {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 1rem;
+    }
+
+    .streak-badge {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 14px 18px;
+      border-radius: 18px;
+      backdrop-filter: blur(8px);
+      min-width: 220px;
+    }
+
+    .streak-badge .label {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.78);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .streak-badge strong {
+      font-size: 1.45rem;
+      display: block;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 0.95fr 1.25fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      padding: 18px;
+    }
+
+    .card-title {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .month-control {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .month-display {
+      flex: 1;
+      min-width: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-align: center;
+      color: var(--text);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      transition: 0.2s ease;
+      border-radius: 16px;
+      min-height: 54px;
+      padding: 0 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .icon-btn {
+      width: 56px;
+      height: 56px;
+      flex: 0 0 56px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fbff;
+      border-radius: 18px;
+      border: 1px solid rgba(111, 211, 255, 0.22);
+      color: #12315c;
+      font-size: 1.55rem;
+      font-weight: 900;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 12px 24px rgba(30, 167, 255, 0.18);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, rgba(30, 167, 255, 0.12), rgba(139, 92, 246, 0.14));
+      color: var(--text);
+      border: 1px solid rgba(111, 211, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.16), rgba(255, 107, 107, 0.12));
+      color: #ffb4c0;
+      border: 1px solid rgba(255, 107, 107, 0.22);
+    }
+
+    .btn:hover,
+    .icon-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:hover {
+      filter: brightness(1.04);
+    }
+
+    .icon-btn:hover {
+      color: var(--primary);
+      border-color: rgba(111, 211, 255, 0.35);
+    }
+
+    .habit-form {
+      display: grid;
+      grid-template-columns: 1.1fr 0.7fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .habit-form .btn {
+      min-width: 120px;
+      align-self: stretch;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      padding: 0 14px;
+      background: var(--surface-2);
+      outline: none;
+      color: var(--text);
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--primary-2);
+      box-shadow: 0 0 0 4px rgba(30, 167, 255, 0.12);
+    }
+
+    .tracker-wrap {
+      border-radius: 32px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .tracker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 18px 0;
+      flex-wrap: wrap;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-3);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .table-scroll {
+      overflow: auto;
+      padding: 18px;
+      padding-top: 12px;
+    }
+
+    table {
+      width: max-content;
+      min-width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    thead th,
+    tbody td {
+      border-left: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    thead tr:first-child th:first-child {
+      border-top-right-radius: 18px;
+    }
+
+    thead tr:first-child th:last-child {
+      border-top-left-radius: 18px;
+    }
+
+    thead th {
+      background: #12315c;
+      color: #fff;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    thead .week-head {
+      background: #0f2748;
+      font-size: 0.84rem;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    thead .day-head {
+      min-width: 52px;
+      background: #1a4b84;
+      padding: 8px 4px;
+    }
+
+    thead .day-head.weekend {
+      background: #8b5cf6;
+      color: #f5f3ff;
+      font-weight: 800;
+    }
+
+    .sticky-col {
+      position: sticky;
+      right: 0;
+      z-index: 6;
+    }
+
+    thead .habit-head,
+    tbody .habit-cell {
+      padding: 12px 14px;
+      background: #0e2039;
+      position: sticky;
+      right: 0;
+      z-index: 4;
+      min-width: 240px;
+      max-width: 240px;
+    }
+
+    .habit-name-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .habit-name {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .habit-name span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .habit-actions {
+      display: flex;
+      gap: 6px;
+      opacity: 0;
+      transition: 0.2s ease;
+    }
+
+    tbody tr:hover .habit-actions {
+      opacity: 1;
+    }
+
+    .tiny-btn {
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+    }
+
+    .tiny-btn.delete {
+      color: #ff7c7c;
+    }
+
+    .tiny-btn.edit {
+      color: #6fd3ff;
+    }
+
+    .day-cell {
+      min-width: 52px;
+      text-align: center;
+      padding: 8px 0;
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .day-cell.weekend {
+      background-image: linear-gradient(rgba(139, 92, 246, 0.08), rgba(139, 92, 246, 0.08));
+    }
+
+    .tick {
+      width: 26px;
+      height: 26px;
+      border-radius: 9px;
+      border: 2px solid rgba(155, 181, 214, 0.55);
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      display: inline-grid;
+      place-items: center;
+      transition: 0.2s ease;
+      font-weight: 900;
+      color: white;
+    }
+
+    .tick:hover {
+      transform: scale(1.05);
+      border-color: var(--primary-2);
+    }
+
+    .tick.checked {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-color: var(--primary);
+      box-shadow: 0 8px 18px rgba(30, 167, 255, 0.22);
+    }
+
+    .summary-row td {
+      background: #133a2a !important;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      padding: 11px 8px;
+    }
+
+    .summary-row.percent td {
+      background: #221d45 !important;
+      color: #e9ddff;
+    }
+
+    .summary-row .habit-cell,
+    .summary-row.percent .habit-cell {
+      text-align: right;
+      font-weight: 800;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .progress-card .progress-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: 700;
+      gap: 12px;
+    }
+
+    .progress-bar {
+      height: 16px;
+      border-radius: 999px;
+      background: var(--surface-3);
+      overflow: hidden;
+    }
+
+    .progress-bar > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #1ea7ff, #8b5cf6);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .insight-list {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .insight-list .btn {
+      width: 100%;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.35;
+      white-space: normal;
+      word-break: keep-all;
+      font-size: 0.92rem;
+      padding-inline: 16px;
+    }
+
+    .insight-item {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .insight-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .empty-state {
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 1180px) {
+      .controls,
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app-shell {
+        padding: 14px;
+      }
+
+      .hero,
+      .tracker-wrap,
+      .card {
+        border-radius: 24px;
+      }
+
+      .month-control,
+      .habit-form {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .month-control {
+        grid-template-columns: 56px 1fr 56px;
+      }
+
+      thead .habit-head,
+      tbody .habit-cell {
+        min-width: 190px;
+        max-width: 190px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>✨ متعقّب العادات اليومي ✨</h1>
+          <p>خلي التزامك ممتع: علّم إنجازاتك كل يوم، وراقب تقدّمك، وخلي التحفيز قدام عينك طول الشهر.</p>
+        </div>
+        <div class="streak-badge">
+          <span class="label">🔥 أفضل سلسلة حالية</span>
+          <strong id="bestStreakValue">0 يوم</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="card">
+        <h2 class="card-title">📅 الشهر الحالي</h2>
+        <div class="month-control">
+          <button id="nextMonthBtn" class="icon-btn" type="button" title="الشهر التالي" aria-label="الشهر التالي">❮</button>
+          <div class="month-display" id="monthDisplay"></div>
+          <button id="prevMonthBtn" class="icon-btn" type="button" title="الشهر السابق" aria-label="الشهر السابق">❯</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">➕ إضافة عادة جديدة</h2>
+        <form id="habitForm" class="habit-form">
+          <div class="field">
+            <label for="habitName">اسم العادة</label>
+            <input id="habitName" type="text" placeholder="مثال: قراءة 10 صفحات" required />
+          </div>
+          <div class="field">
+            <label for="habitEmoji">الأيقونة</label>
+            <input id="habitEmoji" type="text" maxlength="4" placeholder="📚" />
+          </div>
+          <button class="btn btn-primary" type="submit">حفظ</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="tracker-wrap">
+      <div class="tracker-header">
+        <div>
+          <h2 class="card-title" style="margin:0; font-size:1.12rem;">🗂️ جدول العادات</h2>
+          <p class="muted" style="margin:8px 0 0;">اضغط على أي مربع لتسجيل الإنجاز. البيانات تُحفَظ تلقائيًا على جهازك.</p>
+        </div>
+        <div class="legend">
+          <span><i class="dot" style="background:#1ea7ff"></i> يوم عادي</span>
+          <span><i class="dot" style="background:#8b5cf6"></i> نهاية الأسبوع</span>
+          <span><i class="dot" style="background:#22c55e"></i> تم الإنجاز</span>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table id="trackerTable"></table>
+        <div id="emptyState" class="empty-state" hidden>
+          ما في عادات لسه. ابدأ بإضافة أول عادة فوق ✨
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <div class="card progress-card">
+        <h2 class="card-title">🎯 تقدّم الشهر</h2>
+        <div class="progress-line">
+          <span>نسبة الالتزام الكلية</span>
+          <span id="progressValue">0%</span>
+        </div>
+        <div class="progress-bar"><span id="progressBarFill"></span></div>
+        <p class="muted" style="margin:12px 0 0;">كل علامة صح تقرّبك من نسختك الأفضل. خليك ثابت ولو بخطوة صغيرة يوميًا.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">🏆 أفضل عادة</h2>
+        <div class="insight-list">
+          <div class="insight-item">
+            <strong id="bestHabitName">—</strong>
+            <span class="muted" id="bestHabitMeta">أضف عاداتك لتظهر النتيجة هنا.</span>
+          </div>
+          <div class="insight-item">
+            <strong>💪 أقل عادة تحتاج اهتمام</strong>
+            <span class="muted" id="needsLoveMeta">كل شيء ممتاز حاليًا.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">⚙️ إجراءات سريعة</h2>
+        <div class="insight-list">
+          <button class="btn btn-secondary" id="seedHabitsBtn" type="button">تحميل عادات افتراضية</button>
+          <button class="btn btn-secondary" id="exportBtn" type="button">تصدير البيانات JSON</button>
+          <button class="btn btn-danger" id="resetMonthBtn" type="button">تصفير الشهر الحالي</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">مصمم بواجهة عربية RTL باستخدام HTML5 + CSS3 + Vanilla JavaScript.</p>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'arabic-habit-tracker-v2';
+    const today = new Date();
+
+    function makeId() {
+      return Math.random().toString(36).slice(2, 10);
+    }
+
+    const defaultHabits = [
+      { id: makeId(), name: 'أصحي بدري', emoji: '🌅' },
+      { id: makeId(), name: 'أذكار الصباح والمساء', emoji: '🌤️' },
+      { id: makeId(), name: 'المشي 7 آلاف خطوة', emoji: '🚶' },
+      { id: makeId(), name: 'الصلاة في وقتها', emoji: '🕌' },
+      { id: makeId(), name: 'بدون موبايل قبل النوم', emoji: '🚫' },
+      { id: makeId(), name: 'قراءة كتاب', emoji: '📚' },
+      { id: makeId(), name: 'الورد اليومي', emoji: '📖' },
+      { id: makeId(), name: 'Workout', emoji: '💪' },
+      { id: makeId(), name: 'أشرب 2 لتر مياه', emoji: '💧' },
+      { id: makeId(), name: 'نوم كافي 7-8 ساعات', emoji: '😴' }
+    ];
+
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (error) {
+          console.warn('Failed to parse storage, resetting...', error);
+        }
+      }
+
+      return {
+        current: {
+          year: today.getFullYear(),
+          month: today.getMonth()
+        },
+        habits: [...defaultHabits],
+        records: {}
+      };
+    }
+
+    let state = loadState();
+
+    const elements = {
+      monthDisplay: document.getElementById('monthDisplay'),
+      trackerTable: document.getElementById('trackerTable'),
+      emptyState: document.getElementById('emptyState'),
+      bestStreakValue: document.getElementById('bestStreakValue'),
+      progressValue: document.getElementById('progressValue'),
+      progressBarFill: document.getElementById('progressBarFill'),
+      bestHabitName: document.getElementById('bestHabitName'),
+      bestHabitMeta: document.getElementById('bestHabitMeta'),
+      needsLoveMeta: document.getElementById('needsLoveMeta'),
+      habitForm: document.getElementById('habitForm'),
+      habitName: document.getElementById('habitName'),
+      habitEmoji: document.getElementById('habitEmoji'),
+      prevMonthBtn: document.getElementById('prevMonthBtn'),
+      nextMonthBtn: document.getElementById('nextMonthBtn'),
+      resetMonthBtn: document.getElementById('resetMonthBtn'),
+      seedHabitsBtn: document.getElementById('seedHabitsBtn'),
+      exportBtn: document.getElementById('exportBtn')
+    };
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function setText(element, value) {
+      if (element) element.textContent = value;
+    }
+
+    function currentMonthKey() {
+      return `${state.current.year}-${String(state.current.month + 1).padStart(2, '0')}`;
+    }
+
+    function getMonthLabel(year, month) {
+      return new Intl.DateTimeFormat('ar-EG', {
+        month: 'long',
+        year: 'numeric'
+      }).format(new Date(year, month, 1));
+    }
+
+    function getArabicWeekday(date) {
+      const raw = new Intl.DateTimeFormat('ar-EG', { weekday: 'short' }).format(date);
+      return raw.replace(/\u200f/g, '').trim();
+    }
+
+    function getDaysInMonth(year, month) {
+      return new Date(year, month + 1, 0).getDate();
+    }
+
+    function getMonthRecords() {
+      const key = currentMonthKey();
+      if (!state.records[key]) state.records[key] = {};
+      return state.records[key];
+    }
+
+    function ensureHabitRecord(habitId) {
+      const monthRecords = getMonthRecords();
+      if (!monthRecords[habitId]) monthRecords[habitId] = {};
+      return monthRecords[habitId];
+    }
+
+    function toggleRecord(habitId, day) {
+      const habitRecord = ensureHabitRecord(habitId);
+      habitRecord[day] = !habitRecord[day];
+      saveState();
+      render();
+    }
+
+    function getWeekGroups(year, month, daysInMonth) {
+      const groups = [];
+      let currentGroup = [];
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        currentGroup.push(day);
+        if (date.getDay() === 6 || day === daysInMonth) {
+          groups.push(currentGroup);
+          currentGroup = [];
+        }
+      }
+
+      if (currentGroup.length) groups.push(currentGroup);
+      return groups;
+    }
+
+    function isWeekend(date) {
+      const weekday = date.getDay();
+      return weekday === 5 || weekday === 6;
+    }
+
+    function countDoneForHabit(habitId) {
+      const records = getMonthRecords()[habitId] || {};
+      return Object.values(records).filter(Boolean).length;
+    }
+
+    function percentForHabit(habitId) {
+      const totalDays = getDaysInMonth(state.current.year, state.current.month);
+      return totalDays ? Math.round((countDoneForHabit(habitId) / totalDays) * 100) : 0;
+    }
+
+    function getLongestStreakAllHabits() {
+      const totalDays = getDaysInMonth(state.current.year, state.current.month);
+      let best = 0;
+
+      state.habits.forEach((habit) => {
+        const record = getMonthRecords()[habit.id] || {};
+        let current = 0;
+
+        for (let day = 1; day <= totalDays; day++) {
+          if (record[day]) {
+            current += 1;
+            best = Math.max(best, current);
+          } else {
+            current = 0;
+          }
+        }
+      });
+
+      return best;
+    }
+
+    function getInsights() {
+      if (!state.habits.length) {
+        return { best: null, worst: null };
+      }
+
+      const ranked = state.habits
+        .map((habit) => ({
+          ...habit,
+          done: countDoneForHabit(habit.id),
+          percent: percentForHabit(habit.id)
+        }))
+        .sort((a, b) => b.percent - a.percent || b.done - a.done);
+
+      return {
+        best: ranked[0],
+        worst: ranked[ranked.length - 1]
+      };
+    }
+
+    function getMonthSummary() {
+      const totalDays = getDaysInMonth(state.current.year, state.current.month);
+      const sumDone = state.habits.reduce((acc, habit) => acc + countDoneForHabit(habit.id), 0);
+      const totalPossible = totalDays * state.habits.length;
+      const monthPercent = totalPossible ? Math.round((sumDone / totalPossible) * 100) : 0;
+
+      return {
+        totalDays,
+        sumDone,
+        monthPercent,
+        bestStreak: getLongestStreakAllHabits(),
+        insights: getInsights()
+      };
+    }
+
+    function createTickButton(isChecked, onClick) {
+      const btn = document.createElement('button');
+      btn.className = `tick ${isChecked ? 'checked' : ''}`;
+      btn.type = 'button';
+      btn.setAttribute('aria-label', isChecked ? 'تم الإنجاز' : 'غير منجز');
+      btn.textContent = isChecked ? '✓' : '';
+      btn.addEventListener('click', onClick);
+      return btn;
+    }
+
+    function editHabit(habitId) {
+      const habit = state.habits.find((item) => item.id === habitId);
+      if (!habit) return;
+
+      const newName = prompt('عدّل اسم العادة', habit.name);
+      if (newName === null) return;
+
+      const trimmedName = newName.trim();
+      if (!trimmedName) {
+        alert('اسم العادة لا يمكن أن يكون فارغًا.');
+        return;
+      }
+
+      const newEmoji = prompt('عدّل الأيقونة', habit.emoji || '✨');
+      if (newEmoji !== null) {
+        habit.emoji = newEmoji.trim() || '✨';
+      }
+
+      habit.name = trimmedName;
+      saveState();
+      render();
+    }
+
+    function deleteHabit(habitId) {
+      const habit = state.habits.find((item) => item.id === habitId);
+      if (!habit) return;
+
+      const confirmed = confirm(`حذف عادة: ${habit.name} ؟`);
+      if (!confirmed) return;
+
+      state.habits = state.habits.filter((item) => item.id !== habitId);
+
+      Object.keys(state.records).forEach((monthKey) => {
+        if (state.records[monthKey]?.[habitId]) {
+          delete state.records[monthKey][habitId];
+        }
+      });
+
+      saveState();
+      render();
+    }
+
+    function renderTable() {
+      const table = elements.trackerTable;
+      table.innerHTML = '';
+
+      if (!state.habits.length) {
+        elements.emptyState.hidden = false;
+        return;
+      }
+
+      elements.emptyState.hidden = true;
+
+      const { year, month } = state.current;
+      const daysInMonth = getDaysInMonth(year, month);
+      const weekGroups = getWeekGroups(year, month, daysInMonth);
+      const monthRecords = getMonthRecords();
+
+      const thead = document.createElement('thead');
+      const weekRow = document.createElement('tr');
+      const dayRow = document.createElement('tr');
+
+      const habitHead = document.createElement('th');
+      habitHead.className = 'habit-head sticky-col';
+      habitHead.rowSpan = 2;
+      habitHead.textContent = '🎯 العادة';
+      weekRow.appendChild(habitHead);
+
+      weekGroups.forEach((group, index) => {
+        const th = document.createElement('th');
+        th.colSpan = group.length;
+        th.className = 'week-head';
+        th.textContent = `الأسبوع ${index + 1}`;
+        weekRow.appendChild(th);
+      });
+
+      const summaryHead = document.createElement('th');
+      summaryHead.className = 'week-head';
+      summaryHead.rowSpan = 2;
+      summaryHead.textContent = 'الإنجاز';
+      weekRow.appendChild(summaryHead);
+
+      const percentHead = document.createElement('th');
+      percentHead.className = 'week-head';
+      percentHead.rowSpan = 2;
+      percentHead.textContent = 'النسبة';
+      weekRow.appendChild(percentHead);
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const th = document.createElement('th');
+        th.className = `day-head ${isWeekend(date) ? 'weekend' : ''}`;
+        th.innerHTML = `<div>${day}</div><div style="font-size:.75rem; opacity:.95">${getArabicWeekday(date)}</div>`;
+        dayRow.appendChild(th);
+      }
+
+      thead.appendChild(weekRow);
+      thead.appendChild(dayRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+
+      state.habits.forEach((habit) => {
+        const tr = document.createElement('tr');
+
+        const habitTd = document.createElement('td');
+        habitTd.className = 'habit-cell sticky-col';
+        habitTd.innerHTML = `
+          <div class="habit-name-wrap">
+            <div class="habit-name">
+              <span>${habit.emoji || '✨'}</span>
+              <span>${habit.name}</span>
+            </div>
+            <div class="habit-actions">
+              <button class="tiny-btn edit" type="button" title="تعديل">✎</button>
+              <button class="tiny-btn delete" type="button" title="حذف">✕</button>
+            </div>
+          </div>
+        `;
+
+        const [editBtn, deleteBtn] = habitTd.querySelectorAll('button');
+        editBtn.addEventListener('click', () => editHabit(habit.id));
+        deleteBtn.addEventListener('click', () => deleteHabit(habit.id));
+        tr.appendChild(habitTd);
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const td = document.createElement('td');
+          const date = new Date(year, month, day);
+          td.className = `day-cell ${isWeekend(date) ? 'weekend' : ''}`;
+          const checked = Boolean(monthRecords[habit.id]?.[day]);
+          td.appendChild(createTickButton(checked, () => toggleRecord(habit.id, day)));
+          tr.appendChild(td);
+        }
+
+        const done = countDoneForHabit(habit.id);
+        const percent = percentForHabit(habit.id);
+
+        const doneTd = document.createElement('td');
+        doneTd.className = 'day-cell';
+        doneTd.innerHTML = `<strong>${done}</strong>`;
+        tr.appendChild(doneTd);
+
+        const percentTd = document.createElement('td');
+        percentTd.className = 'day-cell';
+        percentTd.innerHTML = `<strong>${percent}%</strong>`;
+        tr.appendChild(percentTd);
+
+        tbody.appendChild(tr);
+      });
+
+      const { totalDays, sumDone, monthPercent } = getMonthSummary();
+
+      const dailyDoneRow = document.createElement('tr');
+      dailyDoneRow.className = 'summary-row';
+
+      const labelTd1 = document.createElement('td');
+      labelTd1.className = 'habit-cell sticky-col';
+      labelTd1.textContent = '✅ تم إنجازها';
+      dailyDoneRow.appendChild(labelTd1);
+
+      for (let day = 1; day <= totalDays; day++) {
+        let count = 0;
+        state.habits.forEach((habit) => {
+          if (getMonthRecords()[habit.id]?.[day]) count += 1;
+        });
+        const td = document.createElement('td');
+        td.textContent = count;
+        dailyDoneRow.appendChild(td);
+      }
+
+      const totalDoneTd = document.createElement('td');
+      totalDoneTd.textContent = sumDone;
+      dailyDoneRow.appendChild(totalDoneTd);
+
+      const totalPercentTd = document.createElement('td');
+      totalPercentTd.textContent = `${monthPercent}%`;
+      dailyDoneRow.appendChild(totalPercentTd);
+      tbody.appendChild(dailyDoneRow);
+
+      const dailyPercentRow = document.createElement('tr');
+      dailyPercentRow.className = 'summary-row percent';
+
+      const labelTd2 = document.createElement('td');
+      labelTd2.className = 'habit-cell sticky-col';
+      labelTd2.textContent = '📝 نسبة اليوم';
+      dailyPercentRow.appendChild(labelTd2);
+
+      for (let day = 1; day <= totalDays; day++) {
+        let count = 0;
+        state.habits.forEach((habit) => {
+          if (getMonthRecords()[habit.id]?.[day]) count += 1;
+        });
+        const percent = state.habits.length ? Math.round((count / state.habits.length) * 100) : 0;
+        const td = document.createElement('td');
+        td.textContent = `${percent}%`;
+        dailyPercentRow.appendChild(td);
+      }
+
+      const filler1 = document.createElement('td');
+      filler1.textContent = '—';
+      dailyPercentRow.appendChild(filler1);
+
+      const filler2 = document.createElement('td');
+      filler2.textContent = `${monthPercent}%`;
+      dailyPercentRow.appendChild(filler2);
+
+      tbody.appendChild(dailyPercentRow);
+      table.appendChild(tbody);
+    }
+
+    function renderDashboard() {
+      const { totalDays, monthPercent, bestStreak, insights } = getMonthSummary();
+
+      setText(elements.monthDisplay, getMonthLabel(state.current.year, state.current.month));
+      setText(elements.bestStreakValue, `${bestStreak} يوم`);
+      setText(elements.progressValue, `${monthPercent}%`);
+
+      if (elements.progressBarFill) {
+        elements.progressBarFill.style.width = `${monthPercent}%`;
+      }
+
+      if (insights.best) {
+        setText(elements.bestHabitName, `${insights.best.emoji || '✨'} ${insights.best.name}`);
+        setText(elements.bestHabitMeta, `إنجاز ${insights.best.done} من ${totalDays} يوم (${insights.best.percent}%).`);
+      } else {
+        setText(elements.bestHabitName, '—');
+        setText(elements.bestHabitMeta, 'أضف عاداتك لتظهر النتيجة هنا.');
+      }
+
+      if (insights.worst) {
+        setText(elements.needsLoveMeta, `${insights.worst.emoji || '✨'} ${insights.worst.name} تحتاج دعم أكثر — نسبة الإنجاز ${insights.worst.percent}%.`);
+      } else {
+        setText(elements.needsLoveMeta, 'كل شيء ممتاز حاليًا.');
+      }
+    }
+
+    function render() {
+      renderTable();
+      renderDashboard();
+    }
+
+    function addHabit(name, emoji) {
+      state.habits.push({
+        id: makeId(),
+        name: name.trim(),
+        emoji: emoji.trim() || '✨'
+      });
+      saveState();
+      render();
+    }
+
+    elements.habitForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = elements.habitName.value.trim();
+      const emoji = elements.habitEmoji.value.trim();
+
+      if (!name) return;
+
+      addHabit(name, emoji);
+      elements.habitForm.reset();
+      elements.habitName.focus();
+    });
+
+    elements.prevMonthBtn.addEventListener('click', () => {
+      state.current.month -= 1;
+      if (state.current.month < 0) {
+        state.current.month = 11;
+        state.current.year -= 1;
+      }
+      saveState();
+      render();
+    });
+
+    elements.nextMonthBtn.addEventListener('click', () => {
+      state.current.month += 1;
+      if (state.current.month > 11) {
+        state.current.month = 0;
+        state.current.year += 1;
+      }
+      saveState();
+      render();
+    });
+
+    elements.resetMonthBtn.addEventListener('click', () => {
+      const confirmed = confirm('هل تريد تصفير جميع علامات هذا الشهر فقط؟');
+      if (!confirmed) return;
+      state.records[currentMonthKey()] = {};
+      saveState();
+      render();
+    });
+
+    elements.seedHabitsBtn.addEventListener('click', () => {
+      if (state.habits.length) {
+        const confirmed = confirm('عندك عادات موجودة بالفعل. هل تريد إضافة الافتراضية أيضًا؟');
+        if (!confirmed) return;
+      }
+
+      const existingNames = new Set(state.habits.map((habit) => habit.name));
+      defaultHabits.forEach((habit) => {
+        if (!existingNames.has(habit.name)) {
+          state.habits.push({
+            id: makeId(),
+            name: habit.name,
+            emoji: habit.emoji
+          });
+        }
+      });
+
+      saveState();
+      render();
+    });
+
+    elements.exportBtn.addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `habit-tracker-${currentMonthKey()}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    render();
+  </script>
+</body>
+</html>
